@@ -1,0 +1,44 @@
+<h2>Create New Instructor</h2>
+
+<%= form_with model: @instructor, local: true do |form| %>
+  <% if @instructor.errors.any? %>
+    <div class="alert alert-error">
+      <h4><%= pluralize(@instructor.errors.count, "error") %> prohibited this instructor from being saved:</h4>
+      <ul>
+        <% @instructor.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :email %>
+    <%= form.email_field :email %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :specialization, "Specialization (e.g., Yoga, CrossFit, Pilates)" %>
+    <%= form.text_field :specialization %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :phone %>
+    <%= form.telephone_field :phone %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :bio, "Biography (optional)" %>
+    <%= form.text_area :bio %>
+  </div>
+
+  <div>
+    <%= form.submit "Create Instructor", class: "btn btn-success" %>
+    <%= link_to "Cancel", instructors_path, class: "btn" %>
+  </div>
+<% end %>

@@ -1,0 +1,52 @@
+<h2><%= @instructor.name %></h2>
+
+<div class="card">
+  <p><strong>Email:</strong> <%= @instructor.email %></p>
+  <p><strong>Specialization:</strong> <%= @instructor.specialization %></p>
+  <% if @instructor.phone.present? %>
+    <p><strong>Phone:</strong> <%= @instructor.phone %></p>
+  <% end %>
+  <% if @instructor.bio.present? %>
+    <p><strong>Bio:</strong> <%= @instructor.bio %></p>
+  <% end %>
+</div>
+
+<h3>Upcoming Classes</h3>
+<% if @classes.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Class Name</th>
+        <th>Date & Time</th>
+        <th>Duration</th>
+        <th>Enrolled/Capacity</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @classes.each do |gym_class| %>
+        <tr>
+          <td><%= gym_class.name %></td>
+          <td><%= gym_class.schedule_time.strftime("%A, %B %d at %I:%M %p") %></td>
+          <td><%= gym_class.duration %> min</td>
+          <td><%= gym_class.enrolled_count %>/<%= gym_class.capacity %></td>
+          <td>
+            <%= link_to "View", gym_class, class: "btn" %>
+            <%= link_to "Edit", edit_gym_class_path(gym_class), class: "btn btn-warning" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No upcoming classes scheduled for this instructor.</p>
+<% end %>
+
+<div style="margin-top: 20px;">
+  <%= link_to "Edit Instructor", edit_instructor_path(@instructor), class: "btn" %>
+  <%= link_to "Delete Instructor", @instructor, method: :delete, 
+      confirm: "Are you sure? This will also delete all associated classes.", 
+      class: "btn btn-danger" %>
+  <%= link_to "Back to Instructors", instructors_path, class: "btn" %>
+  <%= link_to "Create Class for this Instructor", new_gym_class_path(instructor_id: @instructor.id), class: "btn btn-success" %>
+</div>

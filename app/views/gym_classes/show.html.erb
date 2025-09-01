@@ -1,0 +1,37 @@
+<h2><%= @gym_class.name %></h2>
+
+<div class="card">
+  <p><strong>Description:</strong> <%= @gym_class.description %></p>
+  <p><strong>Instructor:</strong> <%= link_to @gym_class.instructor.name, @gym_class.instructor %></p>
+  <p><strong>Specialization:</strong> <%= @gym_class.instructor.specialization %></p>
+  <p><strong>Date & Time:</strong> <%= @gym_class.schedule_time.strftime("%A, %B %d, %Y at %I:%M %p") %></p>
+  <p><strong>Duration:</strong> <%= @gym_class.duration %> minutes</p>
+  <p><strong>Capacity:</strong> <%= @gym_class.capacity %> people</p>
+  <p><strong>Currently Enrolled:</strong> <%= @gym_class.enrolled_count %></p>
+  <p><strong>Available Spots:</strong> 
+    <span style="color: <%= @gym_class.available_spots > 0 ? 'green' : 'red' %>;">
+      <%= @gym_class.available_spots %>
+    </span>
+  </p>
+  
+  <% if @gym_class.full? %>
+    <p style="color: red; font-weight: bold;">⚠️ This class is full!</p>
+  <% end %>
+</div>
+
+<div style="margin-top: 20px;">
+  <% unless @gym_class.full? %>
+    <%= link_to "Enroll in Class", enroll_gym_class_path(@gym_class), 
+        method: :patch, class: "btn btn-success" %>
+  <% end %>
+  
+  <% if @gym_class.enrolled_count > 0 %>
+    <%= link_to "Unenroll from Class", unenroll_gym_class_path(@gym_class), 
+        method: :patch, class: "btn btn-warning" %>
+  <% end %>
+  
+  <%= link_to "Edit Class", edit_gym_class_path(@gym_class), class: "btn" %>
+  <%= link_to "Delete Class", @gym_class, method: :delete, 
+      confirm: "Are you sure?", class: "btn btn-danger" %>
+  <%= link_to "Back to Classes", gym_classes_path, class: "btn" %>
+</div>

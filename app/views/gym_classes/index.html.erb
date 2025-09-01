@@ -1,0 +1,47 @@
+<h2>Gym Classes</h2>
+
+<%= link_to "Add New Class", new_gym_class_path, class: "btn" %>
+
+<% if @today_classes.any? %>
+  <h3>Today's Classes</h3>
+  <div style="display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+    <% @today_classes.each do |gym_class| %>
+      <div class="card">
+        <h4><%= gym_class.name %></h4>
+        <p><strong>Instructor:</strong> <%= gym_class.instructor.name %></p>
+        <p><strong>Time:</strong> <%= gym_class.schedule_time.strftime("%I:%M %p") %></p>
+        <p><strong>Duration:</strong> <%= gym_class.duration %> minutes</p>
+        <p><strong>Spots:</strong> <%= gym_class.enrolled_count %>/<%= gym_class.capacity %></p>
+        <div style="margin-top: 10px;">
+          <%= link_to "View", gym_class, class: "btn" %>
+          <%= link_to "Edit", edit_gym_class_path(gym_class), class: "btn btn-warning" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<h3>Upcoming Classes</h3>
+<% if @gym_classes.any? %>
+  <div style="display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+    <% @gym_classes.each do |gym_class| %>
+      <div class="card">
+        <h4><%= gym_class.name %></h4>
+        <p><strong>Instructor:</strong> <%= gym_class.instructor.name %></p>
+        <p><strong>Date:</strong> <%= gym_class.schedule_time.strftime("%A, %B %d") %></p>
+        <p><strong>Time:</strong> <%= gym_class.schedule_time.strftime("%I:%M %p") %></p>
+        <p><strong>Duration:</strong> <%= gym_class.duration %> minutes</p>
+        <p><strong>Spots Available:</strong> <%= gym_class.available_spots %> of <%= gym_class.capacity %></p>
+        <p><%= gym_class.description.truncate(100) %></p>
+        <div style="margin-top: 10px;">
+          <%= link_to "View Details", gym_class, class: "btn" %>
+          <%= link_to "Edit", edit_gym_class_path(gym_class), class: "btn btn-warning" %>
+          <%= link_to "Delete", gym_class, method: :delete, 
+              confirm: "Are you sure?", class: "btn btn-danger" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>No upcoming classes scheduled.</p>
+<% end %>

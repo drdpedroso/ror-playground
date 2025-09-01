@@ -1,0 +1,31 @@
+<h2>Instructors</h2>
+
+<%= link_to "Add New Instructor", new_instructor_path, class: "btn" %>
+
+<% if @instructors.any? %>
+  <div style="display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); margin-top: 20px;">
+    <% @instructors.each do |instructor| %>
+      <div class="card">
+        <h4><%= instructor.name %></h4>
+        <p><strong>Email:</strong> <%= instructor.email %></p>
+        <p><strong>Specialization:</strong> <%= instructor.specialization %></p>
+        <% if instructor.phone.present? %>
+          <p><strong>Phone:</strong> <%= instructor.phone %></p>
+        <% end %>
+        <% if instructor.bio.present? %>
+          <p><strong>Bio:</strong> <%= instructor.bio.truncate(100) %></p>
+        <% end %>
+        <p><strong>Classes:</strong> <%= instructor.gym_classes.upcoming.count %> upcoming</p>
+        <div style="margin-top: 10px;">
+          <%= link_to "View", instructor, class: "btn" %>
+          <%= link_to "Edit", edit_instructor_path(instructor), class: "btn btn-warning" %>
+          <%= link_to "Delete", instructor, method: :delete, 
+              confirm: "Are you sure? This will also delete all associated classes.", 
+              class: "btn btn-danger" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>No instructors found.</p>
+<% end %>

@@ -1,0 +1,50 @@
+<h2>Create New Gym Class</h2>
+
+<%= form_with model: @gym_class, local: true do |form| %>
+  <% if @gym_class.errors.any? %>
+    <div class="alert alert-error">
+      <h4><%= pluralize(@gym_class.errors.count, "error") %> prohibited this class from being saved:</h4>
+      <ul>
+        <% @gym_class.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :description %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :instructor_id, "Instructor" %>
+    <%= form.collection_select :instructor_id, @instructors, :id, :name, 
+        { prompt: "Select an instructor" }, { class: "form-control" } %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :schedule_time, "Date & Time" %>
+    <%= form.datetime_local_field :schedule_time %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :duration, "Duration (minutes)" %>
+    <%= form.number_field :duration, min: 15, max: 180 %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :capacity, "Maximum Capacity" %>
+    <%= form.number_field :capacity, min: 1, max: 50 %>
+  </div>
+
+  <div>
+    <%= form.submit "Create Class", class: "btn btn-success" %>
+    <%= link_to "Cancel", gym_classes_path, class: "btn" %>
+  </div>
+<% end %>
