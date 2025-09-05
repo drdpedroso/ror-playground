@@ -2,8 +2,23 @@ class GymClassesController < ApplicationController
   before_action :set_gym_class, only: [:show, :edit, :update, :destroy, :enroll, :unenroll]
   
   def index
-    @gym_classes = GymClass.includes(:instructor).upcoming.order(:schedule_time)
-    @today_classes = GymClass.includes(:instructor).today.order(:schedule_time)
+    @gym_classes = GymClass.includes(:instructor).upcoming
+    @today_classes = GymClass.includes(:instructor).today
+
+    # Apply filters
+    if params[:name].present?
+      @gym_classes = @gym_classes.where("name ILIKE ?", "%#{params[:name]}%")
+      @today_classes = @today_classes.where("name ILIKE ?", "%#{params[:name]}%")
+    end
+
+    if params[:instructor_id].present?
+      @gym_classes = @gym_classes.where(instructor_id: params[:instructor_id])
+      @today_classes = @today_classes.where(instructor_id: params[:instructor_id])
+    end
+
+    @gym_classes = @gym_classes.order(:schedule_time)
+    @today_classes = @today_classes.order(:schedule_time)
+    @instructors = Instructor.all
   end
   
   def show
