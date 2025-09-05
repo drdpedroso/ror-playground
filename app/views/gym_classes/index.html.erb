@@ -2,6 +2,28 @@
 
 <%= link_to "Add New Class", new_gym_class_path, class: "btn" %>
 
+<div class="card" style="margin: 20px 0;">
+  <h3>Filter Classes</h3>
+  <%= form_with url: gym_classes_path, method: :get, class: "filter-form", local: true do |f| %>
+    <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 15px; align-items: end;">
+      <div>
+        <%= f.label :name, "Class Name" %>
+        <%= f.text_field :name, value: params[:name], placeholder: "Search by class name...", style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" %>
+      </div>
+      <div>
+        <%= f.label :instructor_id, "Instructor" %>
+        <%= f.select :instructor_id, options_from_collection_for_select(@instructors, :id, :name, params[:instructor_id]), 
+            { include_blank: "All Instructors" }, 
+            { style: "width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;" } %>
+      </div>
+      <div>
+        <%= f.submit "Filter", class: "btn" %>
+        <%= link_to "Clear", gym_classes_path, class: "btn btn-warning" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
 <% if @today_classes.any? %>
   <h3>Today's Classes</h3>
   <div style="display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
